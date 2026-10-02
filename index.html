@@ -64,15 +64,25 @@
       transition: all 0.3s ease;
     }
 
-    .card.disabled {
-      opacity: 0.55;
-      pointer-events: none;
-      filter: grayscale(0.2);
+    /* Locked state until Step 1 is tapped */
+    .card.locked {
+      display: none;
+    }
+
+    .card.active-pulse {
+      animation: highlightCard 0.6s ease-in-out;
+      border-color: #e6683c;
+    }
+
+    @keyframes highlightCard {
+      0% { transform: scale(0.97); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
     }
 
     .step-badge {
       display: inline-block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -117,7 +127,7 @@
       border: none;
       cursor: pointer;
       text-decoration: none;
-      transition: transform 0.1s ease, filter 0.2s ease;
+      transition: transform 0.1s ease;
     }
 
     .btn:active {
@@ -135,6 +145,15 @@
       background: var(--insta-gradient);
       color: #ffffff;
       box-shadow: 0 4px 12px rgba(220, 39, 67, 0.25);
+    }
+
+    .completed-indicator {
+      display: none;
+      color: var(--success);
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 10px;
+      text-align: center;
     }
 
     .caption-container {
@@ -178,23 +197,23 @@
 
   <div class="container">
     <div class="header">
-      <!-- REPLACE WITH YOUR SHOP/BRAND NAME -->
-      <h1>Thank You for Visiting!</h1>
-      <p>Support our small business by sharing your feedback in two easy steps.</p>
+      <h1>Hashtag Traveler’s Varanasi</h1>
+      <p>Thank you for staying with us! Leave a quick review and share your story.</p>
     </div>
 
     <!-- STEP 1: GOOGLE REVIEW -->
     <div class="card" id="googleCard">
       <span class="step-badge badge-google">Step 1</span>
-      <h2 class="card-title">Leave a Google Review</h2>
-      <p class="card-desc">Rate your experience with us on Google. It only takes 30 seconds!</p>
+      <h2 class="card-title">Leave a Review on Google</h2>
+      <p class="card-desc">Tap below to rate us. Once submitted, return here for Step 2!</p>
       
       <a 
         href="https://search.google.com/local/writereview?placeid=ChIJCzTXi2AxjjkRY4ynSBqdJAM" 
         target="_blank" 
         rel="noopener noreferrer" 
         class="btn btn-google" 
-        onclick="unlockInstagramStep()"
+        id="googleBtn"
+        onclick="handleGoogleClick()"
       >
         <svg width="18" height="18" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
@@ -202,31 +221,35 @@
           <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
           <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
         </svg>
-        Write a Review on Google
+        Rate Us on Google
       </a>
+
+      <div class="completed-indicator" id="googleDoneText">
+        ✓ Google review opened! Proceed to Step 2 below.
+      </div>
     </div>
 
-    <!-- STEP 2: INSTAGRAM SHARING -->
-    <div class="card" id="instaCard">
+    <!-- STEP 2: INSTAGRAM SHARING (UNLOCKED AFTER STEP 1) -->
+    <div class="card locked" id="instaCard">
       <span class="step-badge badge-insta">Step 2</span>
-      <h2 class="card-title">Share on Instagram</h2>
-      <p class="card-desc">Got a photo? Tap below to copy our ready-made caption and launch Instagram.</p>
+      <h2 class="card-title">Share Your Stay on Instagram</h2>
+      <p class="card-desc">Welcome back! Copy our preset caption and share your photos.</p>
 
       <div id="toast" class="toast">
         ✓ Caption copied! Opening Instagram...
       </div>
 
-      <!-- EDIT YOUR PRE-MADE INSTAGRAM CAPTION HERE -->
-      <div class="caption-container" id="captionText">Great service and top quality! Highly recommend visiting them. ⭐⭐⭐⭐⭐ 
+      <div class="caption-container" id="captionText">Had a wonderful stay at Hashtag Traveler’s Varanasi! ✨
+Loved the vibe, hospitality, and comfortable stay. Highly recommended for travelers visiting Varanasi! 🌸🪔
 
-Tagging: @YourInstagramHandle
-#LocalBusiness #HappyCustomer #QualityFirst</div>
+Tagging: @HashtagTravelersVaranasi
+#HashtagTravelers #VaranasiDiaries #Banaras #TravelIndia #BackpackerVibe</div>
 
       <div class="instructions">
         <ol>
           <li>Tap <strong>Copy Caption & Open Instagram</strong>.</li>
           <li>Tap the <strong>+ (New Post)</strong> button in Instagram.</li>
-          <li>Select your photo and <strong>Paste</strong> the caption!</li>
+          <li>Pick your photos and <strong>Paste</strong>!</li>
         </ol>
       </div>
 
@@ -240,6 +263,39 @@ Tagging: @YourInstagramHandle
   </div>
 
   <script>
+    let googleReviewClicked = false;
+
+    function handleGoogleClick() {
+      googleReviewClicked = true;
+      document.getElementById('googleDoneText').style.display = 'block';
+      
+      // Reveal the Instagram card
+      const instaCard = document.getElementById('instaCard');
+      instaCard.classList.remove('locked');
+    }
+
+    // Detect when the user switches back to this tab after giving the review
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden && googleReviewClicked) {
+        showInstagramPrompt();
+      }
+    });
+
+    window.addEventListener('pageshow', function() {
+      if (googleReviewClicked) {
+        showInstagramPrompt();
+      }
+    });
+
+    function showInstagramPrompt() {
+      const instaCard = document.getElementById('instaCard');
+      instaCard.classList.remove('locked');
+      instaCard.classList.add('active-pulse');
+      
+      // Auto-scroll the page down to Step 2 smoothly
+      instaCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     function copyAndOpenInsta() {
       const text = document.getElementById("captionText").innerText.trim();
       const toast = document.getElementById("toast");
