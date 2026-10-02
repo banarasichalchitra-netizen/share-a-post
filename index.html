@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share on Instagram</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #fafafa;
+      color: #333;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .caption-box {
+      background: #f1f1f1;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: left;
+      line-height: 1.5;
+      margin: 20px 0;
+      word-break: break-word;
+    }
+    button {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Post to Instagram</h2>
+    <p>Tap the button below to copy your caption and jump straight into Instagram.</p>
+
+    <!-- EDIT YOUR CAPTION HERE -->
+    <div class="caption-box" id="captionText">
+      Found my home away from home in varansi, exploring the ghats by day, sharing stories by nights. @hashtagtravellershostel ✨ #Hashtagbanarshostel #hashtagvaranasihostl #varanasitourism #kashivisawnath #assighat #hostellife #backpackers #ghatsofvaranasi #ganga #banaras_varanasi_kashi
+    </div>
+
+    <button onclick="copyAndRedirect()">Copy Caption & Open Instagram</button>
+  </div>
+
+  <script>
+    function copyAndRedirect() {
+      const text = document.getElementById("captionText").innerText.trim();
+      
+      // Copy caption to clipboard
+      navigator.clipboard.writeText(text).then(() => {
+        // Direct intent link to open Instagram camera/create screen
+        window.location.href = "instagram://camera";
+      }).catch(() => {
+        // Fallback if clipboard permission is restricted
+        window.location.href = "instagram://camera";
+      });
+    }
+  </script>
+
+</body>
+</html>
