@@ -1,280 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Share Your Feedback & Win Perks</title>
-  <style>
-    :root {
-      --primary: #1a73e8;
-      --insta-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      --bg: #f8f9fa;
-      --card-bg: #ffffff;
-      --text: #202124;
-      --muted: #5f6368;
-      --border: #dadce0;
-      --success: #1e8e3e;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      padding: 24px 16px;
-      min-height: 100vh;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 440px;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .header p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      transition: all 0.3s ease;
-    }
-
-    /* Locked state until Step 1 is tapped */
-    .card.locked {
-      display: none;
-    }
-
-    .card.active-pulse {
-      animation: highlightCard 0.6s ease-in-out;
-      border-color: #e6683c;
-    }
-
-    @keyframes highlightCard {
-      0% { transform: scale(0.97); }
-      50% { transform: scale(1.02); }
-      100% { transform: scale(1); }
-    }
-
-    .step-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-    }
-
-    .badge-google {
-      background: #e8f0fe;
-      color: var(--primary);
-    }
-
-    .badge-insta {
-      background: #fce8e6;
-      color: #d93025;
-    }
-
-    .card-title {
-      font-size: 17px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .card-desc {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 16px;
-    }
-
-    .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.1s ease;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-google {
-      background: #ffffff;
-      color: #3c4043;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-
-    .btn-insta {
-      background: var(--insta-gradient);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(220, 39, 67, 0.25);
-    }
-
-    .completed-indicator {
-      display: none;
-      color: var(--success);
-      font-size: 13px;
-      font-weight: 600;
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .caption-container {
-      background: #f8f9fa;
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 14px;
-      font-size: 13px;
-      line-height: 1.5;
-      text-align: left;
-      white-space: pre-line;
-      color: #333;
-    }
-
-    .toast {
-      display: none;
-      background: var(--success);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 500;
-      text-align: center;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-
-    .instructions {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 14px;
-      line-height: 1.6;
-    }
-
-    .instructions ol {
-      padding-left: 18px;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <div class="header">
-      <h1>Hashtag Traveler’s Varanasi</h1>
-      <p>Thank you for staying with us! Leave a quick review and share your story.</p>
-    </div>
-
-    <!-- STEP 1: GOOGLE REVIEW -->
-    <div class="card" id="googleCard">
-      <span class="step-badge badge-google">Step 1</span>
-      <h2 class="card-title">Leave a Review on Google</h2>
-      <p class="card-desc">Tap below to rate us. Once submitted, return here for Step 2!</p>
-      
-      <a 
-        href="https://search.google.com/local/writereview?placeid=ChIJCzTXi2AxjjkRY4ynSBqdJAM" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        class="btn btn-google" 
-        id="googleBtn"
-        onclick="handleGoogleClick()"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-        </svg>
-        Rate Us on Google
-      </a>
-
-      <div class="completed-indicator" id="googleDoneText">
-        ✓ Google review opened! Proceed to Step 2 below.
-      </div>
-    </div>
-
-    <!-- STEP 2: INSTAGRAM SHARING (UNLOCKED AFTER STEP 1) -->
-    <div class="card locked" id="instaCard">
-      <span class="step-badge badge-insta">Step 2</span>
-      <h2 class="card-title">Share Your Stay on Instagram</h2>
-      <p class="card-desc">Welcome back! Copy our preset caption and share your photos.</p>
-
-      <div id="toast" class="toast">
-        ✓ Caption copied! Opening Instagram...
-      </div>
-
-      <div class="caption-container" id="captionText">Had a wonderful stay at Hashtag Traveler’s Varanasi! ✨
-Loved the vibe, hospitality, and comfortable stay. Highly recommended for travelers visiting Varanasi! 🌸🪔
-
-Tagging: @HashtagTravelersVaranasi
-#HashtagTravelers #VaranasiDiaries #Banaras #TravelIndia #BackpackerVibe</div>
-
-      <div class="instructions">
-        <ol>
-          <li>Tap <strong>Copy Caption & Open Instagram</strong>.</li>
-          <li>Tap the <strong>+ (New Post)</strong> button in Instagram.</li>
-          <li>Pick your photos and <strong>Paste</strong>!</li>
-        </ol>
-      </div>
-
-      <button class="btn btn-insta" onclick="copyAndOpenInsta()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.161-2.759 6.161-6.163c0-3.402-2.758-6.162-6.161-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-        </svg>
-        Copy Caption & Open Instagram
-      </button>
-    </div>
-  </div>
-
-  <script>
+<script>
     let googleReviewClicked = false;
 
     function handleGoogleClick() {
       googleReviewClicked = true;
       document.getElementById('googleDoneText').style.display = 'block';
       
-      // Reveal the Instagram card
       const instaCard = document.getElementById('instaCard');
-      instaCard.classList.remove('locked');
+      if (instaCard) {
+        instaCard.classList.remove('locked');
+      }
     }
 
-    // Detect when the user switches back to this tab after giving the review
+    // Detect return to tab
     document.addEventListener('visibilitychange', function() {
       if (!document.hidden && googleReviewClicked) {
         showInstagramPrompt();
@@ -289,31 +26,57 @@ Tagging: @HashtagTravelersVaranasi
 
     function showInstagramPrompt() {
       const instaCard = document.getElementById('instaCard');
-      instaCard.classList.remove('locked');
-      instaCard.classList.add('active-pulse');
-      
-      // Auto-scroll the page down to Step 2 smoothly
-      instaCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (instaCard) {
+        instaCard.classList.remove('locked');
+        instaCard.classList.add('active-pulse');
+        instaCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
 
+    // Reliable cross-platform copy & app launcher
     function copyAndOpenInsta() {
       const text = document.getElementById("captionText").innerText.trim();
       const toast = document.getElementById("toast");
 
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => {
-          toast.style.display = "block";
-          setTimeout(() => {
-            window.location.href = "instagram://app";
-          }, 600);
-        }).catch(() => {
-          window.location.href = "instagram://app";
-        });
+      // 1. Copy to clipboard (handles modern and fallback methods)
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
       } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.left = "-999999px";
+        textarea.style.top = "-999999px";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+          document.execCommand('copy');
+        } catch (err) {}
+        document.body.removeChild(textarea);
+      }
+
+      // Show the copied badge
+      if (toast) {
+        toast.style.display = "block";
+      }
+
+      // 2. Open Instagram immediately (No setTimeout to avoid browser security block)
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      if (/android/i.test(userAgent)) {
+        // Native Android Intent: launches app directly; falls back to web if not installed
+        window.location.href = "intent://instagram.com/#Intent;package=com.instagram.android;scheme=https;end";
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // iOS URL scheme
         window.location.href = "instagram://app";
+        // Fallback for iOS if app is missing
+        setTimeout(function() {
+          window.location.href = "https://www.instagram.com/";
+        }, 1500);
+      } else {
+        // Desktop / Laptop
+        window.open("https://www.instagram.com/", "_blank");
       }
     }
   </script>
-
-</body>
-</html>
